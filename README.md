@@ -1,7 +1,3 @@
-
-### Community Node
-Tron SR candidate
-https://tronscan.org/#/address/TDGy2M9qWBepSHDEutWWxWd1JZfmAed3BP/voters
 ## apilister
 Apilister is a small library that allows you to easily:
 - Get the list of voters for a given SR (Super Representant) or candidate on the Tron Blockchain
@@ -46,3 +42,8 @@ holders_list.then( function(info){
 ## Credits
 https://t.me/colradi
 https://t.me/CommunityNode
+
+
+### Community Node
+Community Node is a Tron SR candidate 
+http://www.communitynode.org/
