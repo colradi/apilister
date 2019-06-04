@@ -47,7 +47,7 @@ pool.addEventListener('fulfilled', function (event) { //{ target: thispool, data
         if (event.data.promise._postizo != "repeat"){
             found = true;
             //console.log("FOUND " + event.data.promise._postizo +  " votes: " + event.data.result.total);
-            total = event.data.result.total;
+            total = event.data.result.rangeTotal;
 
         }else{
             //console.log("Empty array detected: \t\t\t\t\t postizo: " +event.data.promise._postizo);
@@ -98,7 +98,7 @@ function composeRequestConfig(start, _address){
             //candidate: "TGzz8gjYiYRqpfmDwnLxfgPuLVNmpCswVp", // -> uri + '?access_token=xxxxx%20xxxxx'
             address: _address, // -> uri + '?access_token=xxxxx%20xxxxx'
             start: start,
-            limit: 10000,
+            limit: 40,
             sort: "-balance" 
         },
         headers: {
@@ -120,10 +120,10 @@ async function getUrlConfigsArray(address){
     //online query..
     var numHolders = await getNumberOfHolders(address);
     
-    var numPages = Math.floor(numHolders / 10000); //Also 'result.page.totalVotes'
+    var numPages = Math.floor(numHolders / 40); //Also 'result.page.totalVotes'
     var url_configs = [];
     for(var i=0 ; i<=numPages; i++){  
-        url_configs.push(composeRequestConfig(i*10000, address)); //will be added as url parameter: ...&start=i*40...
+        url_configs.push(composeRequestConfig(i*40, address)); //will be added as url parameter: ...&start=i*40...
     } 
     //console.log(JSON.stringify(url_configs));
     return { "_url_configs": url_configs, "total": numHolders};

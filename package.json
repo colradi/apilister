@@ -1,0 +1,25 @@
+{
+  "name": "apilister",
+  "version": "1.0.11",
+  "description": "Get the number of voters/holders of a Tron SR using apilist",
+  "main": "apilister.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/colradi/apilister.git"
+  },
+  "keywords": [
+    "apilist",
+    "tron",
+    "blockchain",
+    "communitynode"
+  ],
+  "author": "https://t.me/colradi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/colradi/apilister/issues"
+  },
+  "homepage": "https://github.com/colradi/apilister#readme"
+}

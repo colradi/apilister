@@ -3,7 +3,7 @@ var PromisePool = require('es6-promise-pool');
 var apilister = require("./apilist_prepareURL_holders.js");
 
 var _address = ""; //global 
-var concurrency =3;
+var concurrency =10;
 var url_configs = [];
 var i = 0;
 const holders_url = "https://apilist.tronscan.org/api/tokenholders";
@@ -12,7 +12,7 @@ var prom_counter = 0; //Keeps track of active promises. When 0, all promises ret
 var downloaded = 5;
 
 
-var DEBUG = true;
+var DEBUG = false;
 var old_console = console.log;
 // ENABLE/DISABLE Console Logs
 
@@ -23,7 +23,7 @@ var promiseProducer = function () {
         var req_opt = url_configs.shift(); //when array becomes empty, retval is 'undefined'
         retval = rp(req_opt).catch(function (err) {
             var aux= err.options;
-            console.log(">>FAIL: vamos a reintroducir la query *start*: " + aux.qs.start ); 
+            //console.log(">>FAIL: vamos a reintroducir la query *start*: " + aux.qs.start ); 
             url_configs.push(getOptionsInstance(aux.qs.start));
             retval = Promise.resolve({data: []});;
             retval._postizo = "repeat";
@@ -32,10 +32,10 @@ var promiseProducer = function () {
         });
         retval._postizo = req_opt.qs.start;
         prom_counter++;
-        console.log("Produced promise *start*: " + req_opt.qs.start + " prom_counter: " + prom_counter );
+        //console.log("Produced promise *start*: " + req_opt.qs.start + " prom_counter: " + prom_counter );
     }else{
         if(prom_counter > 0){
-            console.log("Produced promise *fake*: " +  " prom_counter: " + prom_counter );
+            //console.log("Produced promise *fake*: " +  " prom_counter: " + prom_counter );
             retval = Promise.resolve({data: []});
             retval = new Promise((resolve, reject) => {
                 setTimeout(function(){
@@ -59,16 +59,16 @@ pool.addEventListener('fulfilled', function (event) { //{ target: thispool, data
     
     if(event.data.result == undefined){ //this branch should never happen //First 'data' field belongs to es6-promise-pool, and second one belongs to tronair format
         var error = event.data.error; //?? o solo event.data ?
-        console.log("\t\t------------------------Algun tipo de error de red,  maybe 503?");
-        console.log({error});
-        console.log("\t\tAlgun tipo de error de red,  maybe 503? ------------------------");
+        //console.log("\t\t------------------------Algun tipo de error de red,  maybe 503?");
+        //console.log({error});
+        //console.log("\t\tAlgun tipo de error de red,  maybe 503? ------------------------");
     } else { //array, with or without data, doesnt matter
         if (event.data.promise._postizo != "fake"){ //Real data comming in
             prom_counter--;
-            console.log("++DOWNLOADED page (postizo)" + event.data.promise._postizo + " prom_counter: " + prom_counter + " array.length: " + event.data.result.data.length);
+            //console.log("++DOWNLOADED page (postizo)" + event.data.promise._postizo + " prom_counter: " + prom_counter + " array.length: " + event.data.result.data.length);
             Array.prototype.push.apply(pages, event.data.result.data); //Merge the two arrays
         }else{ //In order to wait real promises travelling through the internet to come back, we cheat by sending fake setTimeout-promises
-            console.log("Empty array detected: \t\t\t\t\t postizo: " +event.data.promise._postizo+  " prom_counter: " + prom_counter);
+            //console.log("Empty array detected: \t\t\t\t\t postizo: " +event.data.promise._postizo+  " prom_counter: " + prom_counter);
 
         }
 
@@ -77,7 +77,7 @@ pool.addEventListener('fulfilled', function (event) { //{ target: thispool, data
 
 pool.addEventListener('rejected', function (event) {
   var e = event.data.error
-  console.log('Rejected : #######################' + event.data.error.message);
+  //console.log('Rejected : #######################' + event.data.error.message);
   //console.log({e});
 })
 
@@ -92,7 +92,7 @@ function getOptionsInstance(start){
             //candidate: "TGzz8gjYiYRqpfmDwnLxfgPuLVNmpCswVp", // -> uri + '?access_token=xxxxx%20xxxxx'
             address: _address, // -> uri + '?access_token=xxxxx%20xxxxx'
             start: start,
-            limit: 10000,
+            limit: 50,
             sort: "-balance",
             count: true
         },
@@ -111,14 +111,13 @@ function getOptionsInstance(start){
  * @return  { "total": total, "totalVotes": totalVotes, "data": url_configs}
  */
 async function getHolders(address){
-    console.log("dentro")
-    if(!DEBUG){   console.log = function() {}      }
+    //if(!DEBUG){   console.log = function() {}      }
 
    _address = address;
 
    var {_url_configs, total} = await apilister.getUrlConfigsArray(address);
   url_configs = _url_configs;
-console.log({_url_configs});
+    //console.log({_url_configs});
   // Start the pool
   var poolPromise = pool.start();
 
@@ -146,7 +145,7 @@ async function getHoldersTronairFormat(address){
     var tmp = holders.data.map(function (target){ 
         
         sum+= target.balance;
-        console.log(target.address);
+        //console.log(target.address);
         return [target.address, target.balance]; 
     });
     return { "size": holders.data.length, "balance": sum, "data": tmp};
@@ -155,12 +154,13 @@ async function getHoldersTronairFormat(address){
 module.exports.getHolders = getHolders;
 module.exports.getHoldersTronairFormat = getHoldersTronairFormat;
 
+//TEST:
 //getHolders("TDGy2M9qWBepSHDEutWWxWd1JZfmAed3BP").then(x => { checkHolders(x);  });
-/* getHoldersTronairFormat("TE96WxFUvmCfjKD4sncr6KQ7pYsxYcgEXR").then(x => { checkHolders(x);  }); //aardvarkcoin
+//getHoldersTronairFormat("TE96WxFUvmCfjKD4sncr6KQ7pYsxYcgEXR").then(x => { checkHolders(x);  }); //aardvarkcoin
 
-function checkHolders(info){
+/* function checkHolders(info){
     //console.log(arr.length);
     //console.log({arr});
     console.log(JSON.stringify(info));
-} */
-
+} 
+ */
