@@ -39,10 +39,31 @@ holders_list.then( function(info){
 	} );
 ```
 A new method has been added in orther to read the holders list from a json file instead of the apilist URL.
-The forma of such a json file is ... (yet to be decided 07/06/2019)
 ```javascript
 	var holders = apilister.getHoldersFromFile("/home/user/holdersABC.json");
 	console.log(JSON.stringify(holders));
+```
+The forma of such a json file is ... (yet to be decided 07/06/2019) this:
+```
+{
+  "last_updated": 1559808801,
+  "start_block": 1338282,
+  "end_block": 9873397,
+  "blocks_searched": 8535115,
+  "token_name": "BeatzCoin",
+  "token_id": 1000501,
+  "token_issuer": "TGcvY5rcopeyooHcNbxa3XEKVuJws3y9Td",
+  "total_holders": 20502,
+  "total_tokens": 459222125,
+  "data": [ 
+        {
+          "address": "TGj5DhYY3jMGmMWbX3yGo9t9KrPHQn4eRp",
+          "balance": 41024992
+        },
+        {
+          "address": "TUsFSbcbLaTwdjBG1Q6R7WduAfQpsG4xbf",
+          "balance": 31617216
+        },
 ```
 
 
