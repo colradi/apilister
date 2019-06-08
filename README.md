@@ -63,7 +63,10 @@ The forma of such a json file is ... (yet to be decided 07/06/2019) this:
         {
           "address": "TUsFSbcbLaTwdjBG1Q6R7WduAfQpsG4xbf",
           "balance": 31617216
-        },
+        }, ...
+		...
+  ]
+}
 ```
 
 
