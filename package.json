@@ -1,6 +1,6 @@
 {
   "name": "apilister",
-  "version": "1.0.11",
+  "version": "1.0.16",
   "description": "Get the number of voters/holders of a Tron SR using apilist",
   "main": "apilister.js",
   "scripts": {

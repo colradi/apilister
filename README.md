@@ -38,6 +38,13 @@ holders_list.then( function(info){
 		console.log("Actual data: " + info.data );
 	} );
 ```
+A new method has been added in orther to read the holders list from a json file instead of the apilist URL.
+The forma of such a json file is ... (yet to be decided 07/06/2019)
+```javascript
+	var holders = apilister.getHoldersFromFile("/home/user/holdersABC.json");
+	console.log(JSON.stringify(holders));
+```
+
 
 ## Tronair specific methods
 There are a couple of methods that probably you wont be insterested in. They are used by tronair because they return the 
